@@ -1,0 +1,63 @@
+﻿<Window x:Class="BitmapScale.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BitmapScale"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <local:ViewModel x:Key="VM" ></local:ViewModel>
+        <local:IntConverter x:Key="IntConverter"></local:IntConverter>
+    </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="VM"></StaticResource>
+    </Window.DataContext>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.ColumnSpan="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="rateSlider" Minimum="1" Maximum="5" Value="{Binding ScaleRate,Mode=TwoWay}"></Slider>
+                <TextBlock Grid.Column="1" Text="{Binding ElementName=rateSlider,Path=Value,Mode=OneWay,Converter={StaticResource IntConverter}}"></TextBlock>
+            </Grid>
+            <StackPanel Grid.RowSpan="2" Grid.Column="2" Orientation="Vertical">
+                <ListView ItemsSource="{Binding ScaleMethods,Mode=OneWay}" SelectedItem="{Binding SelectMethod,Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="btnPicker" Content="选取图像" Command="{Binding PickImageCommand}"></Button>
+                <Button Content="缩放" VerticalAlignment="Top" Command="{Binding ScaleCommand}"></Button>
+            </StackPanel>
+            <Grid x:Name="leftGrid" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <!--<Border BorderThickness="2" BorderBrush="Red" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Border>-->
+                
+                <Image Stretch="None" Source="{Binding SrcBitmapSource,Mode=OneWay}"></Image>
+            </Grid>
+            <Grid x:Name="rightGrid" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <!--<Border BorderThickness="2"  BorderBrush="Red" Width="{Binding ElementName=rightGrid,Path=ActualWidth,Mode=OneWay}"
+                           Height="{Binding ElementName=rightGrid,Path=ActualHeight,Mode=OneWay}"></Border>-->
+                <Image Stretch="None" Source="{Binding DstBitmapSource,Mode=OneWay}"></Image>
+            </Grid>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <TextBox TextChanged="TextBox_TextChanged" Foreground="White" Text="{Binding Log,Mode=OneWay}" Height="100" Background="Black" TextWrapping="Wrap"></TextBox>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Window>
