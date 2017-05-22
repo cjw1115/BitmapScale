@@ -1,4 +1,9 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿
+//Scale.cs：三大图像缩放算法在WPF下的实现
+//by:CQ
+//time:2017-05-22
+
+using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +16,14 @@ namespace BitmapScale
 {
     interface IBitmapScale
     {
-        Task<BitmapSource> ScaleAsync(BitmapSource source,int scaleRate);
+        Task<BitmapSource> ScaleAsync(BitmapSource source,double scaleRate);
     }
 
     public class NearestScale : IBitmapScale
     {
-        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, int scaleRate)
+        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, double scaleRate)
         {
+            
             var oldPixelWidth = bitmapSource.PixelWidth;
             var oldPixelHeight = bitmapSource.PixelHeight;
 
@@ -29,13 +35,11 @@ namespace BitmapScale
             var newPixls = new byte[(int)(pixels.Length * scaleRate * scaleRate)];
             await Task.Run(()=> 
             {
-                
-
                 var oldStride = oldPixelWidth * 4;
-                var newStride = oldPixelWidth * 4 * scaleRate;
+                var newStride = (int)(oldPixelWidth * 4 * scaleRate);
 
-                var newPixelHeiht = oldPixelHeight * scaleRate;
-                var newPixelWidth = oldPixelWidth * scaleRate;
+                var newPixelHeiht = (int)(oldPixelHeight * scaleRate);
+                var newPixelWidth = (int)(oldPixelWidth * scaleRate);
                 for (int i = 0; i < newPixelHeiht; i++)
                 {
                     for (int j = 0; j < newPixelWidth; j++)
@@ -69,7 +73,7 @@ namespace BitmapScale
 
     public class BilinearScale: IBitmapScale
     {
-        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, int scaleRate)
+        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, double scaleRate)
         {
             var oldPixelWidth = bitmapSource.PixelWidth;
             var oldPixelHeight = bitmapSource.PixelHeight;
@@ -87,10 +91,10 @@ namespace BitmapScale
             await Task.Run(() =>
             {
                 var oldStride = oldPixelWidth * 4;
-                var newStride = oldPixelWidth * 4 * scaleRate;
+                var newStride = (int)(oldPixelWidth * 4 * scaleRate);
 
-                var newPixelHeiht = oldPixelHeight * scaleRate;
-                var newPixelWidth = oldPixelWidth * scaleRate;
+                var newPixelHeiht = (int)(oldPixelHeight * scaleRate);
+                var newPixelWidth = (int)(oldPixelWidth * scaleRate);
                 for (int i = 0; i < newPixelHeiht; i++)
                 {
                     for (int j = 0; j < newPixelWidth; j++)
@@ -166,7 +170,7 @@ namespace BitmapScale
     }
     public class BicubicScale : IBitmapScale
     {
-        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, int scaleRate)
+        public async Task<BitmapSource> ScaleAsync(BitmapSource bitmapSource, double scaleRate)
         {
             var oldPixelWidth = bitmapSource.PixelWidth;
             var oldPixelHeight = bitmapSource.PixelHeight;
@@ -182,10 +186,10 @@ namespace BitmapScale
             await Task.Run(() =>
             {
                 var oldStride = oldPixelWidth * 4;
-                var newStride = oldPixelWidth * 4 * scaleRate;
+                var newStride = (int)(oldPixelWidth * 4 * scaleRate);
 
-                var newPixelHeiht = oldPixelHeight * scaleRate;
-                var newPixelWidth = oldPixelWidth * scaleRate;
+                var newPixelHeiht = (int)(oldPixelHeight * scaleRate);
+                var newPixelWidth = (int)(oldPixelWidth * scaleRate);
                 for (int i = 0; i < newPixelHeiht; i++)
                 {
                     for (int j = 0; j < newPixelWidth; j++)

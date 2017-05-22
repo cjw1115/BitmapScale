@@ -30,7 +30,7 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Slider x:Name="rateSlider" Minimum="1" Maximum="5" Value="{Binding ScaleRate,Mode=TwoWay}"></Slider>
+                <Slider x:Name="rateSlider" Minimum="0" Maximum="4" Value="{Binding ScaleRate,Mode=TwoWay}"></Slider>
                 <TextBlock Grid.Column="1" Text="{Binding ElementName=rateSlider,Path=Value,Mode=OneWay,Converter={StaticResource IntConverter}}"></TextBlock>
             </Grid>
             <StackPanel Grid.RowSpan="2" Grid.Column="2" Orientation="Vertical">
@@ -52,7 +52,10 @@
             <Grid x:Name="rightGrid" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <!--<Border BorderThickness="2"  BorderBrush="Red" Width="{Binding ElementName=rightGrid,Path=ActualWidth,Mode=OneWay}"
                            Height="{Binding ElementName=rightGrid,Path=ActualHeight,Mode=OneWay}"></Border>-->
-                <Image Stretch="None" Source="{Binding DstBitmapSource,Mode=OneWay}"></Image>
+                <ScrollViewer HorizontalScrollBarVisibility="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Image Stretch="None" Source="{Binding DstBitmapSource,Mode=OneWay}"></Image>
+                </ScrollViewer>
+                
             </Grid>
             <Grid Grid.Row="2" Grid.ColumnSpan="2">
                 <TextBox TextChanged="TextBox_TextChanged" Foreground="White" Text="{Binding Log,Mode=OneWay}" Height="100" Background="Black" TextWrapping="Wrap"></TextBox>

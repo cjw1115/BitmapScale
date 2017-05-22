@@ -41,7 +41,7 @@ namespace BitmapScale
         {
             var dstValue = (double)value;
 
-            return ((int)dstValue).ToString();
+            return Math.Round(dstValue, 1).ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

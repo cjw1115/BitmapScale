@@ -45,9 +45,9 @@ namespace BitmapScale
             set { _scaleMethods = value; OnPropertyChanged(); }
         }
 
-        private int _scaleRate;
+        private double _scaleRate;
 
-        public int ScaleRate
+        public double ScaleRate
         {
             get { return _scaleRate; }
             set { _scaleRate = value; OnPropertyChanged(); }
@@ -71,20 +71,25 @@ namespace BitmapScale
            
             try
             {
-                LogMessage($"缩放倍率({ScaleRate})", "开始缩放");
+                LogMessage($"开始缩放:", SelectMethod.Name);
+                LogMessage($"缩放倍率({ScaleRate})", SelectMethod.Name);
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
 
                 var scale = SelectMethod.Method.Assembly.CreateInstance(SelectMethod.Method.FullName) as IBitmapScale;
                 if (scale != null)
                 {
-                    var newSource = await scale.ScaleAsync(SrcBitmapSource, (int)ScaleRate);
+                    var newSource = await scale.ScaleAsync(SrcBitmapSource, Math.Round(ScaleRate,1));
+                    //var newSource = await scale.ScaleAsync(SrcBitmapSource,0.5);
                     DstBitmapSource = newSource;
                 }
                 timer.Stop();
                 
-                LogMessage($"缩放倍率({ScaleRate})", "缩放完成");
-                LogMessage($"{timer.ElapsedMilliseconds}毫秒", "耗时");
+                LogMessage($"缩放完成", SelectMethod.Name);
+                LogMessage($"========================");
+                LogMessage($"{timer.ElapsedMilliseconds}毫秒", $"耗时({SelectMethod.Name})");
+
+                LogMessage($"{Environment.NewLine}");
             }
             catch (Exception e)
             {
@@ -108,8 +113,6 @@ namespace BitmapScale
 
                     LogMessage($"大小({buffer.Length}Byte)", "加载图片");
                 }
-
-                    
             }
         }
         public ViewModel()
